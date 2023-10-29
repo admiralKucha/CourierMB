@@ -35,12 +35,62 @@ for file in files:
     contours, _ = cv2.findContours(allRangesImg, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # Перебор контуров
+    realContours = list()
     for contour in contours:
         # Вычисление длины и ширины контура
         x, y, w, h = cv2.boundingRect(contour)
 
         # Проверка длины и ширины контура
-        if 300>w>30 and 200>h>30:
-            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        if 250>w>30 and 100>h>30:
+            realContours.append([x, x+w, y, y+h])
+            #cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
+    i = 0
+    le = len(realContours)
+    while True:
+        j = i + 1
+        flag = False
+        while j < le:
+
+            if abs(np.subtract(realContours[i][0], realContours[j][1], dtype=np.dtype(float))) < 20 and\
+                    abs(np.subtract(realContours[i][2], realContours[j][2], dtype=np.dtype(float))) < 20:
+
+                realContours[i] = [min(realContours[i][0], realContours[j][0]),
+                                   max(realContours[i][1], realContours[j][1]),
+                                   min(realContours[i][2], realContours[j][2]),
+                                   max(realContours[i][3], realContours[j][3])
+                                   ]
+
+            elif abs(np.subtract(realContours[i][0], realContours[j][1], dtype=np.dtype(float))) < 20 and\
+                    abs(np.subtract(realContours[i][2], realContours[j][2], dtype=np.dtype(float))) < 20:
+
+                realContours[i] = [min(realContours[i][0], realContours[j][0]),
+                                   max(realContours[i][1], realContours[j][1]),
+                                   min(realContours[i][2], realContours[j][2]),
+                                   max(realContours[i][3], realContours[j][3])
+                                   ]
+
+            else:
+                j += 1
+                continue
+
+            flag = True
+            realContours.pop(j)
+            le -= 1
+
+        else:
+            if not flag:
+                i += 1
+
+        if i > le - 1:
+            break
+
+    for contour in realContours:
+        x, x_w, y, y_h = contour
+        if 250 > x_w - x > 100 and 76 > y_h - y > 38:
+            print(x_w - x , y_h - y)
+            cv2.rectangle(image, (x, y), (x_w, y_h), (0, 255, 0), 2)
+    print("##########")
+
     cv2.imshow('Image with boundaries', image)
     cv2.waitKey(0)
