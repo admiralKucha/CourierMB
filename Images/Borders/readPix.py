@@ -24,6 +24,7 @@ def createRange(x: list) -> list[list]:
     le = len(listOfRanges)
     while True:
         j = i + 1
+        flag = False
         while j < le:
             if abs(np.subtract(listOfRanges[i][0], listOfRanges[j][1], dtype=np.dtype(float))) < 2:
                 if listOfRanges[i][0] > listOfRanges[j][0]:
@@ -41,11 +42,13 @@ def createRange(x: list) -> list[list]:
                 j += 1
                 continue
 
+            flag = True
             listOfRanges.pop(j)
             le -= 1
 
         else:
-            i += 1
+            if not flag:
+                i += 1
 
         if i > le - 1:
             break
@@ -71,7 +74,7 @@ for folder in folders:
     dictOfPixels = dict()
 
     for file in files:
-        image = cv2.imread(rf"evening\{file}")
+        image = cv2.imread(rf"{folder}\{file}")
         gray_image = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
         for strings in gray_image:
