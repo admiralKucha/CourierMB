@@ -18,7 +18,7 @@ def filterImg(image: np.ndarray, range: list) -> np.ndarray:
 
 
 listOfRanges = [[16, 36], [79, 97], [97, 122], [30, 76], [40, 70]]
-path = r"Images\Screenshoots\normal"
+path = r"Images\Screenshoots\fog"
 files = os.listdir(path=fr".\{path}")
 
 
@@ -43,7 +43,7 @@ for file in files:
         # Проверка длины и ширины контура
         if 250>w>30 and 100>h>30:
             realContours.append([x, x+w, y, y+h])
-            #cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        #cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
     i = 0
     le = len(realContours)
@@ -87,8 +87,8 @@ for file in files:
 
     for contour in realContours:
         x, x_w, y, y_h = contour
+        print(x_w - x, y_h - y)
         if 250 > x_w - x > 100 and 76 > y_h - y > 38:
-            print(x_w - x , y_h - y)
             cv2.rectangle(image, (x, y), (x_w, y_h), (0, 255, 0), 2)
     print("##########")
 
