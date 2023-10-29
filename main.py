@@ -1,15 +1,15 @@
 import cv2
 import os
-listOfRanges = [[16, 36], [79, 97], [97, 122]]
-path = r"Images\Screenshoots\morning"
+listOfRanges = [[16, 36], [79, 97], [97, 122], [30, 76], ]
+path = r"Images\Screenshoots\normal"
 files = os.listdir(path=fr".\{path}")
 
 for file in files:
     image = cv2.imread(rf"{path}\{file}")
     gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
 
-    lower = 48
-    upper = 76
+    lower = 40
+    upper = 70
     mask = cv2.inRange(gray, lower, upper)
 
     result = cv2.bitwise_and(image, image, mask=mask)
