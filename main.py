@@ -18,7 +18,7 @@ def filterImg(image: np.ndarray, range: list) -> np.ndarray:
 
 
 listOfRanges = [[16, 36], [79, 97], [97, 122], [30, 76], [40, 70]]
-path = r"Images\Screenshoots\fog"
+path = r"Images\Screenshoots\normal"
 files = os.listdir(path=fr".\{path}")
 
 
