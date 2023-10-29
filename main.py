@@ -32,6 +32,15 @@ for file in files:
         buf = filterImg(image, range)
         allRangesImg = cv2.bitwise_or(allRangesImg, buf)
 
-    cv2.imshow("Result", allRangesImg)
+    contours, _ = cv2.findContours(allRangesImg, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
+
+    # Перебор контуров
+    for contour in contours:
+        # Вычисление длины и ширины контура
+        x, y, w, h = cv2.boundingRect(contour)
+
+        # Проверка длины и ширины контура
+        if 300>w>30 and 200>h>30:
+            cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+    cv2.imshow('Image with boundaries', image)
     cv2.waitKey(0)
-    cv2.destroyAllWindows()
