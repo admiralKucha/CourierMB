@@ -8,6 +8,7 @@ files = os.listdir(path=fr".\{path}")
 
 for file in files:
     image = cv2.imread(rf"{path}\{file}")
+    print(type(image))
     shapeIm = image.shape[0:2]
     print(shapeIm)
     black = np.zeros(shapeIm, dtype=np.uint8)
@@ -25,7 +26,6 @@ for file in files:
     if cv2.countNonZero(result) > (shapeIm[0] * shapeIm[1]) / 5:
         result1 = black
 
-    cv2.waitKey(0)
     lower = listOfFogs[1][0]
     upper = listOfFogs[1][1]
     mask = cv2.inRange(gray, lower, upper)
