@@ -1,7 +1,7 @@
 import cv2
 import os
 import numpy as np
-
+#morning - 4
 
 def createRange(x: list) -> list[list]:
     listOfRanges = list()
@@ -67,7 +67,7 @@ def createRange(x: list) -> list[list]:
 folders = os.listdir(path=".")
 
 for folder in folders:
-    if folder == "readPix.py":
+    if folder == "readPix.py" or folder =="readPixNotGrey.py":
         continue
 
     files = os.listdir(path=f"./{folder}")

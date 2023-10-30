@@ -17,8 +17,8 @@ def filterImg(image: np.ndarray, range: list) -> np.ndarray:
     return result
 
 
-listOfRanges = [[16, 36], [79, 97], [97, 122], [30, 76], [40, 70]]
-path = r"Images\Screenshoots\normal"
+listOfRanges = [[16, 36], [79, 97], [97, 122], [27, 76], [40, 70]]
+path = r"Images\Screenshoots\evening"
 files = os.listdir(path=fr".\{path}")
 
 
@@ -41,9 +41,9 @@ for file in files:
         x, y, w, h = cv2.boundingRect(contour)
 
         # Проверка длины и ширины контура
-        if 250>w>30 and 100>h>30:
+        if w>30 and h>30:
             realContours.append([x, x+w, y, y+h])
-        #cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
 
     i = 0
     le = len(realContours)
@@ -87,10 +87,8 @@ for file in files:
 
     for contour in realContours:
         x, x_w, y, y_h = contour
-        print(x_w - x, y_h - y)
-        if 250 > x_w - x > 100 and 76 > y_h - y > 38:
+        if y_h-y < x_w-x and x_w-x < 400:
             cv2.rectangle(image, (x, y), (x_w, y_h), (0, 255, 0), 2)
-    print("##########")
 
     cv2.imshow('Image with boundaries', image)
     cv2.waitKey(0)
