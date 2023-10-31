@@ -11,14 +11,19 @@ def filterImg(image: np.ndarray, range: list) -> np.ndarray:
     result = cv2.bitwise_and(gray, gray, mask=mask)
     result[mask > 0] = 255
 
-    if cv2.countNonZero(result) > (shapeIm[0] * shapeIm[1]) / 10:
+
+    if (shapeIm[0] * shapeIm[1]) / 10 < cv2.countNonZero(result):
         result = black.copy()
 
     return result
 
-
+#[79, 97]
 listOfRanges = [[16, 36], [79, 97], [97, 122], [27, 76], [40, 70]]
-path = r"Images\Screenshoots\evening"
+
+folderTest = "normal"
+path = rf"Images\Screenshoots\{folderTest}"
+pathToWrite = rf"Images\results\{folderTest}"
+
 files = os.listdir(path=fr".\{path}")
 
 
@@ -32,6 +37,7 @@ for file in files:
         buf = filterImg(image, range)
         allRangesImg = cv2.bitwise_or(allRangesImg, buf)
 
+
     contours, _ = cv2.findContours(allRangesImg, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
     # Перебор контуров
@@ -43,7 +49,7 @@ for file in files:
         # Проверка длины и ширины контура
         if w>30 and h>30:
             realContours.append([x, x+w, y, y+h])
-        cv2.rectangle(image, (x, y), (x + w, y + h), (0, 255, 0), 2)
+
 
     i = 0
     le = len(realContours)
@@ -87,8 +93,12 @@ for file in files:
 
     for contour in realContours:
         x, x_w, y, y_h = contour
-        if y_h-y < x_w-x and x_w-x < 400:
+        w = x_w - x
+        h = y_h-y
+        if h < w and 80 < w < 300 and 30 < h < 100:
             cv2.rectangle(image, (x, y), (x_w, y_h), (0, 255, 0), 2)
 
     cv2.imshow('Image with boundaries', image)
+    cv2.imwrite(rf"{pathToWrite}\{file}", image)
+
     cv2.waitKey(0)
